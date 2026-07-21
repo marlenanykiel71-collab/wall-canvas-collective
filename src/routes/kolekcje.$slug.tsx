@@ -55,10 +55,13 @@ function uniq<T>(arr: T[]) {
   return Array.from(new Set(arr));
 }
 
+type Filters = z.infer<typeof searchSchema>;
+
 function CollectionPage() {
   const { category } = Route.useLoaderData();
-  const search = Route.useSearch();
-  const navigate = useNavigate({ from: Route.fullPath });
+  const rawSearch = Route.useSearch();
+  const search = rawSearch as Filters;
+  const navigate = useNavigate({ from: Route.fullPath }) as (opts: { search: (p: Filters) => Filters }) => void;
   const [mobileFilters, setMobileFilters] = useState(false);
 
   const catProducts = useMemo(() => getProductsByCategory(category.slug), [category.slug]);
@@ -97,18 +100,18 @@ function CollectionPage() {
 
   const toggle = (key: "color" | "pattern" | "size" | "material", value: string) => {
     const cur = search[key];
-    const next = cur.includes(value) ? cur.filter((v) => v !== value) : [...cur, value];
-    navigate({ search: (prev) => ({ ...prev, [key]: next }) });
+    const next = cur.includes(value) ? cur.filter((v: string) => v !== value) : [...cur, value];
+    navigate({ search: (prev: Filters) => ({ ...prev, [key]: next }) });
   };
 
   const clear = () =>
     navigate({ search: () => ({ color: [], pattern: [], size: [], material: [], min: 0, max: 0, sort: search.sort }) });
 
   const activeChips: { key: "color" | "pattern" | "size" | "material"; value: string; label: string }[] = [
-    ...search.color.map((v) => ({ key: "color" as const, value: v, label: `Kolor: ${v}` })),
-    ...search.pattern.map((v) => ({ key: "pattern" as const, value: v, label: `Wzór: ${v}` })),
-    ...search.size.map((v) => ({ key: "size" as const, value: v, label: `Wymiar: ${v}` })),
-    ...search.material.map((v) => ({ key: "material" as const, value: v, label: `Materiał: ${v}` })),
+    ...search.color.map((v: string) => ({ key: "color" as const, value: v, label: `Kolor: ${v}` })),
+    ...search.pattern.map((v: string) => ({ key: "pattern" as const, value: v, label: `Wzór: ${v}` })),
+    ...search.size.map((v: string) => ({ key: "size" as const, value: v, label: `Wymiar: ${v}` })),
+    ...search.material.map((v: string) => ({ key: "material" as const, value: v, label: `Materiał: ${v}` })),
   ];
 
   const totalActive = activeChips.length + (search.min ? 1 : 0) + (search.max ? 1 : 0);
