@@ -246,9 +246,9 @@ function CollectionPage() {
 
 type FilterPanelProps = {
   facets: { colors: string[]; patterns: string[]; sizes: string[]; materials: string[]; priceMin: number; priceMax: number };
-  search: z.infer<typeof searchSchema>;
+  search: Filters;
   toggle: (k: "color" | "pattern" | "size" | "material", v: string) => void;
-  navigate: ReturnType<typeof useNavigate>;
+  navigate: NavFn;
   clear: () => void;
   effMin: number;
   effMax: number;
@@ -314,14 +314,14 @@ function FilterPanel({ facets, search, toggle, navigate, clear, effMin, effMax }
               type="number"
               placeholder="Od"
               value={search.min || ""}
-              onChange={(e) => navigate({ search: (p) => ({ ...p, min: Number(e.target.value) || 0 }) })}
+              onChange={(e) => navigate({ search: (p: Filters) => ({ ...p, min: Number(e.target.value) || 0 }) })}
               className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-ember"
             />
             <input
               type="number"
               placeholder="Do"
               value={search.max || ""}
-              onChange={(e) => navigate({ search: (p) => ({ ...p, max: Number(e.target.value) || 0 }) })}
+              onChange={(e) => navigate({ search: (p: Filters) => ({ ...p, max: Number(e.target.value) || 0 }) })}
               className="border border-border px-3 py-2 text-sm focus:outline-none focus:border-ember"
             />
           </div>
