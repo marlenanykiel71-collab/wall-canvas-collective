@@ -9,9 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ONasRouteImport } from './routes/o-nas'
+import { Route as KontaktRouteImport } from './routes/kontakt'
+import { Route as InspiracjeRouteImport } from './routes/inspiracje'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as KolekcjeIndexRouteImport } from './routes/kolekcje.index'
+import { Route as ProduktSlugRouteImport } from './routes/produkt.$slug'
+import { Route as KolekcjeSlugRouteImport } from './routes/kolekcje.$slug'
 
+const ONasRoute = ONasRouteImport.update({
+  id: '/o-nas',
+  path: '/o-nas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktRoute = KontaktRouteImport.update({
+  id: '/kontakt',
+  path: '/kontakt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InspiracjeRoute = InspiracjeRouteImport.update({
+  id: '/inspiracje',
+  path: '/inspiracje',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -22,35 +42,108 @@ const KolekcjeIndexRoute = KolekcjeIndexRouteImport.update({
   path: '/kolekcje/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProduktSlugRoute = ProduktSlugRouteImport.update({
+  id: '/produkt/$slug',
+  path: '/produkt/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KolekcjeSlugRoute = KolekcjeSlugRouteImport.update({
+  id: '/kolekcje/$slug',
+  path: '/kolekcje/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/inspiracje': typeof InspiracjeRoute
+  '/kontakt': typeof KontaktRoute
+  '/o-nas': typeof ONasRoute
+  '/kolekcje/$slug': typeof KolekcjeSlugRoute
+  '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje/': typeof KolekcjeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/inspiracje': typeof InspiracjeRoute
+  '/kontakt': typeof KontaktRoute
+  '/o-nas': typeof ONasRoute
+  '/kolekcje/$slug': typeof KolekcjeSlugRoute
+  '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje': typeof KolekcjeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/inspiracje': typeof InspiracjeRoute
+  '/kontakt': typeof KontaktRoute
+  '/o-nas': typeof ONasRoute
+  '/kolekcje/$slug': typeof KolekcjeSlugRoute
+  '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje/': typeof KolekcjeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/kolekcje/'
+  fullPaths:
+    | '/'
+    | '/inspiracje'
+    | '/kontakt'
+    | '/o-nas'
+    | '/kolekcje/$slug'
+    | '/produkt/$slug'
+    | '/kolekcje/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/kolekcje'
-  id: '__root__' | '/' | '/kolekcje/'
+  to:
+    | '/'
+    | '/inspiracje'
+    | '/kontakt'
+    | '/o-nas'
+    | '/kolekcje/$slug'
+    | '/produkt/$slug'
+    | '/kolekcje'
+  id:
+    | '__root__'
+    | '/'
+    | '/inspiracje'
+    | '/kontakt'
+    | '/o-nas'
+    | '/kolekcje/$slug'
+    | '/produkt/$slug'
+    | '/kolekcje/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  InspiracjeRoute: typeof InspiracjeRoute
+  KontaktRoute: typeof KontaktRoute
+  ONasRoute: typeof ONasRoute
+  KolekcjeSlugRoute: typeof KolekcjeSlugRoute
+  ProduktSlugRoute: typeof ProduktSlugRoute
   KolekcjeIndexRoute: typeof KolekcjeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/o-nas': {
+      id: '/o-nas'
+      path: '/o-nas'
+      fullPath: '/o-nas'
+      preLoaderRoute: typeof ONasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakt': {
+      id: '/kontakt'
+      path: '/kontakt'
+      fullPath: '/kontakt'
+      preLoaderRoute: typeof KontaktRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inspiracje': {
+      id: '/inspiracje'
+      path: '/inspiracje'
+      fullPath: '/inspiracje'
+      preLoaderRoute: typeof InspiracjeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +158,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KolekcjeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/produkt/$slug': {
+      id: '/produkt/$slug'
+      path: '/produkt/$slug'
+      fullPath: '/produkt/$slug'
+      preLoaderRoute: typeof ProduktSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kolekcje/$slug': {
+      id: '/kolekcje/$slug'
+      path: '/kolekcje/$slug'
+      fullPath: '/kolekcje/$slug'
+      preLoaderRoute: typeof KolekcjeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  InspiracjeRoute: InspiracjeRoute,
+  KontaktRoute: KontaktRoute,
+  ONasRoute: ONasRoute,
+  KolekcjeSlugRoute: KolekcjeSlugRoute,
+  ProduktSlugRoute: ProduktSlugRoute,
   KolekcjeIndexRoute: KolekcjeIndexRoute,
 }
 export const routeTree = rootRouteImport
