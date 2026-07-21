@@ -56,12 +56,14 @@ function uniq<T>(arr: T[]) {
 }
 
 type Filters = z.infer<typeof searchSchema>;
+type NavFn = (opts: { search: (p: Filters) => Filters }) => void;
 
 function CollectionPage() {
-  const { category } = Route.useLoaderData();
+  const loaderData = Route.useLoaderData() as { category: import("@/data/catalog").Category };
+  const { category } = loaderData;
   const rawSearch = Route.useSearch();
-  const search = rawSearch as Filters;
-  const navigate = useNavigate({ from: Route.fullPath }) as (opts: { search: (p: Filters) => Filters }) => void;
+  const search = rawSearch as unknown as Filters;
+  const navigate = useNavigate({ from: Route.fullPath }) as unknown as NavFn;
   const [mobileFilters, setMobileFilters] = useState(false);
 
   const catProducts = useMemo(() => getProductsByCategory(category.slug), [category.slug]);

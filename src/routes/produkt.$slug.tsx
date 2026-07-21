@@ -31,7 +31,8 @@ export const Route = createFileRoute("/produkt/$slug")({
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const data = Route.useLoaderData() as { product: import("@/data/catalog").Product };
+  const { product } = data;
   const { add, favorites, toggleFav } = useCart();
   const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState(product.sizes[0]);
