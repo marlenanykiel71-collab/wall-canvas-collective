@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ONasRouteImport } from './routes/o-nas'
 import { Route as KontaktRouteImport } from './routes/kontakt'
 import { Route as InspiracjeRouteImport } from './routes/inspiracje'
@@ -17,6 +18,11 @@ import { Route as KolekcjeIndexRouteImport } from './routes/kolekcje.index'
 import { Route as ProduktSlugRouteImport } from './routes/produkt.$slug'
 import { Route as KolekcjeSlugRouteImport } from './routes/kolekcje.$slug'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ONasRoute = ONasRouteImport.update({
   id: '/o-nas',
   path: '/o-nas',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/inspiracje': typeof InspiracjeRoute
   '/kontakt': typeof KontaktRoute
   '/o-nas': typeof ONasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/kolekcje/$slug': typeof KolekcjeSlugRoute
   '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje/': typeof KolekcjeIndexRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/inspiracje': typeof InspiracjeRoute
   '/kontakt': typeof KontaktRoute
   '/o-nas': typeof ONasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/kolekcje/$slug': typeof KolekcjeSlugRoute
   '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje': typeof KolekcjeIndexRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/inspiracje': typeof InspiracjeRoute
   '/kontakt': typeof KontaktRoute
   '/o-nas': typeof ONasRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/kolekcje/$slug': typeof KolekcjeSlugRoute
   '/produkt/$slug': typeof ProduktSlugRoute
   '/kolekcje/': typeof KolekcjeIndexRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/inspiracje'
     | '/kontakt'
     | '/o-nas'
+    | '/sitemap.xml'
     | '/kolekcje/$slug'
     | '/produkt/$slug'
     | '/kolekcje/'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/inspiracje'
     | '/kontakt'
     | '/o-nas'
+    | '/sitemap.xml'
     | '/kolekcje/$slug'
     | '/produkt/$slug'
     | '/kolekcje'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/inspiracje'
     | '/kontakt'
     | '/o-nas'
+    | '/sitemap.xml'
     | '/kolekcje/$slug'
     | '/produkt/$slug'
     | '/kolekcje/'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   InspiracjeRoute: typeof InspiracjeRoute
   KontaktRoute: typeof KontaktRoute
   ONasRoute: typeof ONasRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   KolekcjeSlugRoute: typeof KolekcjeSlugRoute
   ProduktSlugRoute: typeof ProduktSlugRoute
   KolekcjeIndexRoute: typeof KolekcjeIndexRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/o-nas': {
       id: '/o-nas'
       path: '/o-nas'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   InspiracjeRoute: InspiracjeRoute,
   KontaktRoute: KontaktRoute,
   ONasRoute: ONasRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   KolekcjeSlugRoute: KolekcjeSlugRoute,
   ProduktSlugRoute: ProduktSlugRoute,
   KolekcjeIndexRoute: KolekcjeIndexRoute,
@@ -187,13 +208,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
